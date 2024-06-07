@@ -1,0 +1,31 @@
+# docker-compose.yml
+version: "3.8"
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - client
+      - server
+
+  client:
+    build: ./client
+#    ports:
+#      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - ./client/.env.local
+
+  server:
+    build: ./server
+#    ports:
+#      - "5001:5001"
+    env_file:
+      - ./server/.env
+    environment:
+      - NODE_ENV=production
